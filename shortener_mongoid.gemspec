@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.homepage                  = "https://github.com/kennym/shortener_mongoid"
   s.required_rubygems_version = "> 1.3.6"
   s.add_dependency "rails", ">= 3.0.7"
-  s.add_dependency "mongoid", "~> 2.4.11"
+  s.add_dependency "mongoid", ">= 3.1.5"
   s.add_development_dependency "bson_ext", "~> 1.5"
   s.add_development_dependency "debugger"
   s.add_development_dependency "mongoid-rspec", "<= 1.4.5"

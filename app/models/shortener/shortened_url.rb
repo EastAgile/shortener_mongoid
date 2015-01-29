@@ -6,8 +6,8 @@ class Shortener::ShortenedUrl
   field :unique_key,  :type => String
   field :use_count,   :type => Integer, :default => 0
 
-  index :url, unique: true
-  index :unique_key, unique: true
+  index :url => 1
+  index :unique_key => 1
 
   URL_PROTOCOL_HTTP = "http://"
   REGEX_LINK_HAS_PROTOCOL = Regexp.new('\Ahttp:\/\/|\Ahttps:\/\/', Regexp::IGNORECASE)
