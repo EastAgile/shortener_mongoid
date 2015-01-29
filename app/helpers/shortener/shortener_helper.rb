@@ -1,9 +1,19 @@
 module Shortener::ShortenerHelper
 
   # generate a url from a url string
-  def short_url(url, owner=nil)
+  def short_url(url, owner=nil, root_url=nil)
     short_url = Shortener::ShortenedUrl.generate(url, owner)
-    short_url ? url_for(:controller => :"shortener/shortened_urls", :action => :show, :id => short_url.unique_key, :only_path => false) : url
+    if short_url
+      url_hash = {}
+      if root_url
+        uri = URI.parse(root_url)
+        url_hash[:host] = uri.host
+        url_hash[:port] = uri.port == 80 ? nil : uri.port
+      end
+      url_for({ :controller => :"shortener/shortened_urls", :action => :show, :id => short_url.unique_key, :only_path => false }.merge(url_hash))
+    else
+      url
+    end
   end
 
   # Get the full URL from a short URL
