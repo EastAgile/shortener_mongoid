@@ -19,7 +19,17 @@ describe Shortener::ShortenedUrlsController do
   let(:short_url) { Shortener::ShortenedUrl.generate("www.doorkeeperhq.com") }
 
   describe "GET show with actual code" do
-    let(:code) { short_url.unique_key}
+    let(:code) { short_url.unique_key }
+    it_should_behave_like "good code"
+  end
+
+  describe "GET show with actual code but different case" do
+    let(:code) { short_url.unique_key.upcase }
+
+    before do
+      Shortener.charset = :alphanumcase
+    end
+
     it_should_behave_like "good code"
   end
 
