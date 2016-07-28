@@ -12,7 +12,7 @@ class Shortener::ShortenedUrl
   URL_PROTOCOL_HTTP = "http://"
   REGEX_LINK_HAS_PROTOCOL = Regexp.new('\Ahttp:\/\/|\Ahttps:\/\/', Regexp::IGNORECASE)
 
-  validates :url, :presence => true, :uniqueness => true
+  validates :url, :presence => true
   validates :unique_key, :uniqueness => true
 
   attr_accessible :url, :unique_key
@@ -43,7 +43,7 @@ class Shortener::ShortenedUrl
     # so check the datastore
     cleaned_url = clean_url(orig_url)
     scope = owner ? owner.shortened_urls : self
-    scope.find_or_create_by(url: cleaned_url)
+    scope.create(url: cleaned_url)
   end
 
   # return shortened url on success, nil on failure
