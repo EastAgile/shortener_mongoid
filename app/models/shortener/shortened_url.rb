@@ -32,7 +32,7 @@ class Shortener::ShortenedUrl
   # generate a shortened link from a url
   # link to a user if one specified
   # throw an exception if anything goes wrong
-  def self.generate!(orig_url, owner=nil)
+  def self.generate!(orig_url, owner=nil, options = { force_create: false })
     # if we get a shortened_url object with a different owner, generate
     # new one for the new owner. Otherwise return same object
     if orig_url.is_a?(Shortener::ShortenedUrl)
@@ -43,13 +43,17 @@ class Shortener::ShortenedUrl
     # so check the datastore
     cleaned_url = clean_url(orig_url)
     scope = owner ? owner.shortened_urls : self
-    scope.create(url: cleaned_url)
+    if options[:force_create]
+      scope.create(url: cleaned_url)
+    else
+      scope.find_or_create_by(url: cleaned_url)
+    end
   end
 
   # return shortened url on success, nil on failure
-  def self.generate(orig_url, owner=nil)
+  def self.generate(orig_url, owner=nil, options = { force_create: false })
     begin
-      generate!(orig_url, owner)
+      generate!(orig_url, owner, options)
     rescue
       nil
     end

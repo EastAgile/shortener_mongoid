@@ -45,10 +45,20 @@ describe Shortener::ShortenedUrl do
 
   context "existing shortened URL" do
     before { @existing = Shortener::ShortenedUrl.generate!("http://www.doorkeeperhq.com/") }
-    it "should create new despite existing URL" do
-      Shortener::ShortenedUrl.generate!("http://www.doorkeeperhq.com/").should_not == @existing
-      Shortener::ShortenedUrl.generate!("www.doorkeeperhq.com").should_not == @existing
+    context "option force_create is true" do
+      it "should create new despite existing URL" do
+        Shortener::ShortenedUrl.generate!("http://www.doorkeeperhq.com/", nil, { force_create: true }).should_not == @existing
+        Shortener::ShortenedUrl.generate!("www.doorkeeperhq.com", nil, { force_create: true }).should_not == @existing
+      end
     end
+
+    context "option force_create is nil" do
+      it "should create new despite existing URL" do
+        Shortener::ShortenedUrl.generate!("http://www.doorkeeperhq.com/").should == @existing
+        Shortener::ShortenedUrl.generate!("www.doorkeeperhq.com").should == @existing
+      end
+    end
+
     it "should generate different one for different" do
       Shortener::ShortenedUrl.generate!("www.doorkeeper.jp").should_not == @existing
     end
