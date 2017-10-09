@@ -15,8 +15,6 @@ class Shortener::ShortenedUrl
   validates :url, :presence => true
   validates :unique_key, :uniqueness => true
 
-  attr_accessible :url, :unique_key
-
   before_create :assign_unique_key
 
   # allows the shortened link to be associated with a user
